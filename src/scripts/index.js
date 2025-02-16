@@ -8,6 +8,24 @@ const profileAddButton = document.querySelector(".profile__add-button");
 const editButton = document.querySelector(".profile__edit-button");
 const popupEditProfile = document.querySelector(".popup_type_edit");
 const popupNewCard = document.querySelector(".popup_type_new-card");
+const popupImage = document.querySelector(".popup_type_image");
+const nameImage = popupImage.querySelector(".popup__caption");
+const popupImageElement = popupImage.querySelector(".popup__image");
+
+const popups = document.querySelectorAll(".popup"); //Ищем все попапы
+popups.forEach((popup) => {
+  popup.addEventListener("click", (evt) => {
+    //Благодаря всплытию при клике на крестик мы поймаем событие на элементе попапа.
+    //Проверяем что кликнули на оверлей или на крестик.
+    if (
+      evt.target === evt.currentTarget ||
+      evt.target.classList.contains("popup__close")
+    ) {
+      //В currentTarget у нас всегда будет элемент на котором мы поймали событие, т.е. попап.
+      closePopup(popup);
+    }
+  });
+});
 
 function displayCards(cards) {
   placesList.innerHTML = "";
@@ -25,10 +43,7 @@ function displayCards(cards) {
 displayCards(initialCards);
 
 function clickCardImage(link, name) {
-  const popupImage = document.querySelector(".popup_type_image");
-  const nameImage = popupImage.querySelector(".popup__caption");
-  const openImage = popupImage.querySelector(".popup__image");
-  openImage.src = link;
+  popupImageElement.src = link;
   nameImage.alt = name;
   nameImage.textContent = name;
   openPopup(popupImage);
@@ -60,9 +75,8 @@ function handleFormSubmit(evt) {
   // Получите значение полей jobInput и nameInput из свойства value
   profileName.textContent = nameInput.value;
   profileDescription.textContent = jobInput.value;
-  closePopup();
-  // Выберите элементы, куда должны быть вставлены значения полей
-  // Вставьте новые значения с помощью textContent
+  const openedPopup = document.querySelector(".popup_is-opened");
+  closePopup(openedPopup);
 }
 
 // Прикрепляем обработчик к форме:
@@ -84,10 +98,10 @@ function handleformNewPlace(evt) {
     handleLike,
     clickCardImage
   );
-  placesList.insertBefore(cardNewElement, placesList.firstChild);
-  inputCardName.value = "";
-  inputCardLink.value = "";
-  closePopup();
+  placesList.prepend(cardNewElement);
+  formElement.reset();
+  const openedPopup = document.querySelector(".popup_is-opened");
+  closePopup(openedPopup);
 }
 
 formNewPlace.addEventListener("submit", handleformNewPlace);
