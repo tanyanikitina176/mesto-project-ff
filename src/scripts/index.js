@@ -6,7 +6,7 @@ import {
   cardDeleteOnServer,
   putCardLikes,
   deleteCardLikes,
-  updateAvatar
+  updateAvatar,
 } from "./api.js";
 import { createCard } from "./card.js";
 import "../pages/index.css";
@@ -74,7 +74,6 @@ const formAvatar = document.forms.update_avatar;
 const formInputAvatar = formAvatar.elements.link;
 
 imageProfile.addEventListener("click", () => {
-  changeSubmitButtonText(popupAvatar, "Сохранить");
   openPopup(popupAvatar);
   formAvatar.reset();
   clearValidation(popupAvatar, validationConfig);
@@ -92,13 +91,15 @@ function handleFormSubmitAvatar(evt) {
     })
     .catch((err) => {
       console.log("Ошибка при обновлении аватара:", err);
+    })
+    .finally(() => {
+      changeSubmitButtonText(evt.target, "Сохранить");
     });
 }
 
 formAvatar.addEventListener("submit", handleFormSubmitAvatar);
 
 editButton.addEventListener("click", () => {
-  changeSubmitButtonText(popupEditProfile, "Сохранить");
   openPopup(popupEditProfile);
   nameInput.value = profileName.textContent;
   jobInput.value = profileDescription.textContent;
@@ -106,7 +107,6 @@ editButton.addEventListener("click", () => {
 });
 
 profileAddButton.addEventListener("click", () => {
-  changeSubmitButtonText(popupNewCard, "Сохранить");
   openPopup(popupNewCard);
   formNewPlace.reset();
   clearValidation(popupNewCard, validationConfig);
@@ -132,6 +132,9 @@ function handleFormSubmitProfile(evt) {
     })
     .catch((error) => {
       console.log("Ошибка при обновлении профиля:", error);
+    })
+    .finally(() => {
+      changeSubmitButtonText(evt.target, "Сохранить");
     });
 }
 
@@ -160,6 +163,9 @@ function handleformNewPlace(evt) {
     })
     .catch((err) => {
       console.log("Ошибка при отправке карточки:", err);
+    })
+    .finally(() => {
+      changeSubmitButtonText(evt.target, "Сохранить");
     });
 }
 

@@ -9,23 +9,20 @@ const config = {
 export const getInitialProfile = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     headers: config.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then((res) => onResponse(res, "Ошибка инициализации профиля"));
 };
 
 export const getInitialCards = () => {
   return fetch(`${config.baseUrl}/cards`, {
     headers: config.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then((res) => onResponse(res, "Ошибка инициализации карточек"));
+};
+
+const onResponse = (res, messageError) => {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`${messageError}: ${res.status}`);
 };
 
 export const updateProfileData = (name, about) => {
@@ -36,12 +33,7 @@ export const updateProfileData = (name, about) => {
       name,
       about,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then((res) => onResponse(res, "Ошибка обновления профиля"));
 };
 
 export const postCard = (name, link) => {
@@ -49,51 +41,28 @@ export const postCard = (name, link) => {
     method: "POST",
     headers: config.headers,
     body: JSON.stringify({ name, link }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  });
+  }).then((res) => onResponse(res, "Ошибка добавления карточки"));
 };
 
 export const cardDeleteOnServer = (cardId) => {
   return fetch(`${config.baseUrl}/cards/${cardId}`, {
     method: "DELETE",
     headers: config.headers,
-  }).then((res) => {
-    console.log("Статус ответа:", res.status);
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка удаления: ${res.status}`);
-  });
+  }).then((res) => onResponse(res, "Ошибка удаления карточки"));
 };
 
 export const putCardLikes = (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: "PUT",
     headers: config.headers,
-  }).then((res) => {
-    console.log("Статус ответа лайка:", res.status);
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка лайка: ${res.status}`);
-  });
+  }).then((res) => onResponse(res, "Ошибка лайка"));
 };
 
 export const deleteCardLikes = (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: "DELETE",
     headers: config.headers,
-  }).then((res) => {
-    console.log("Статус ответа удаления лайка:", res.status);
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка удаления лайка: ${res.status}`);
-  });
+  }).then((res) => onResponse(res, "Ошибка удаления лайка"));
 };
 
 export const updateAvatar = (avatar) => {
@@ -101,11 +70,5 @@ export const updateAvatar = (avatar) => {
     method: "PATCH",
     headers: config.headers,
     body: JSON.stringify({ avatar }),
-  }).then((res) => {
-    console.log("Статус ответа обновления аватара:", res.status);
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка обновления аватара: ${res.status}`);
-  });
+  }).then((res) => onResponse(res, "Ошибка обновления аватара"));
 };

@@ -43,7 +43,6 @@ export function createCard(
     const actionLike = isLiked ? deleteCardLikes : putCardLikes;
     actionLike(cardData._id)
       .then((cardData) => {
-        const likeButton = cardElement.querySelector(".card__like-button");
         handleLike(likeButton);
         counterLike.textContent = cardData.likes.length;
       })
