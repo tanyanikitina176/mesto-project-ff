@@ -61,10 +61,10 @@ export function createCard(
   return cardElement;
 }
 
-export function deleteCard(cardElement) {
+function deleteCard(cardElement) {
   cardElement.remove();
 }
 
-export function handleLike(likeButton) {
+function handleLike(likeButton) {
   likeButton.classList.toggle("card__like-button_is-active");
 }

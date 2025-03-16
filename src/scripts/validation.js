@@ -92,6 +92,7 @@ export const clearValidation = (profileForm, validationConfig) => {
       validationConfig.inputErrorClass,
       validationConfig.errorClass
     );
+    inputElement.setCustomValidity("");
   });
   toggleButtonState(
     inputList,
